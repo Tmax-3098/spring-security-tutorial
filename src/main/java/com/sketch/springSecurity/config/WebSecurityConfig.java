@@ -22,7 +22,7 @@ public class WebSecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity){
         httpSecurity
                 .authorizeHttpRequests(auth-> auth
-                        .requestMatchers("/getallpost").permitAll()
+                        .requestMatchers("/getallpost","/auth/**").permitAll()
                         .requestMatchers("/post/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 //disabling csrf
@@ -34,22 +34,22 @@ public class WebSecurityConfig {
         return httpSecurity.build();
     }
 
-    @Bean
-    UserDetailsService myInMemoryUserDetailsService(){
-        UserDetails normalUser = User
-                .withUsername("user")
-                .password(passwordEncoder().encode("user"))
-                .roles("USER")
-                .build();
-
-        UserDetails adminUser = User
-                .withUsername("admin")
-                .password(passwordEncoder().encode("admin"))
-                .roles("ADMIN")
-                .build();
-
-        return new InMemoryUserDetailsManager(normalUser, adminUser);
-    }
+//    @Bean
+//    UserDetailsService myInMemoryUserDetailsService(){
+//        UserDetails normalUser = User
+//                .withUsername("user")
+//                .password(passwordEncoder().encode("user"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails adminUser = User
+//                .withUsername("admin")
+//                .password(passwordEncoder().encode("admin"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(normalUser, adminUser);
+//    }
 
     @Bean
     PasswordEncoder passwordEncoder(){

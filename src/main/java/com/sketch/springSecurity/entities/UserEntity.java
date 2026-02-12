@@ -3,6 +3,7 @@ package com.sketch.springSecurity.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class UserEntity implements UserDetails {
 
@@ -24,6 +27,7 @@ public class UserEntity implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
+    private String name;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,11 +39,6 @@ public class UserEntity implements UserDetails {
         return this.password;
     }
 
-    public UserEntity(Long id, String email, String password) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-    }
 
     @Override
     public String getUsername() {

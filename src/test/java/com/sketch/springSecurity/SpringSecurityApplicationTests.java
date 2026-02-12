@@ -15,7 +15,7 @@ class SpringSecurityApplicationTests {
 	@Test
 	void contextLoads() {
 
-		UserEntity user = new UserEntity(4L, "max@redbull.com","max");
+		UserEntity user = new UserEntity(4L, "max@redbull.com","max", "Max");
 		String token = jwtService.generateToken(user);
 		System.out.println(token);
 		System.out.println(jwtService.getUserIdFromToken(token));
