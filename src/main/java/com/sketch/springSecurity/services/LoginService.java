@@ -23,6 +23,7 @@ public class LoginService {
 
         UserEntity user = (UserEntity) authentication.getPrincipal();
         String token = jwtService.generateToken(user);
+
         return token;
 
     }

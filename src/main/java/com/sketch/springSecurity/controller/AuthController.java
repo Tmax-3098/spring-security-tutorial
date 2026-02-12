@@ -5,6 +5,9 @@ import com.sketch.springSecurity.dto.SignupDto;
 import com.sketch.springSecurity.dto.UserDto;
 import com.sketch.springSecurity.services.LoginService;
 import com.sketch.springSecurity.services.UserServiceImpl;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +32,11 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request, HttpServletResponse response){
         String token = loginService.login(loginDto);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setHttpOnly(true);
+        response.addCookie(cookie);
         return new ResponseEntity<>(token,HttpStatus.OK);
     }
 }
