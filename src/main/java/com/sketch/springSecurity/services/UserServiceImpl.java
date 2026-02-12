@@ -1,5 +1,6 @@
 package com.sketch.springSecurity.services;
 
+import com.sketch.springSecurity.dto.LoginDto;
 import com.sketch.springSecurity.dto.SignupDto;
 import com.sketch.springSecurity.dto.UserDto;
 import com.sketch.springSecurity.entities.UserEntity;
@@ -7,10 +8,14 @@ import com.sketch.springSecurity.exception.ResourceNotFoundException;
 import com.sketch.springSecurity.repositories.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +26,7 @@ public class UserServiceImpl implements UserDetailsService {
 
     private final UserRepo userRepo;
     private final ModelMapper mapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -35,7 +41,10 @@ public class UserServiceImpl implements UserDetailsService {
         }
 
         UserEntity newUser = mapper.map(signupDto, UserEntity.class);
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return mapper.map(userRepo.save(newUser), UserDto.class);
     }
+
+
 }
 
