@@ -26,11 +26,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/post/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated())
                 //disabling csrf
-//                .csrf(csrfConfig -> csrfConfig
-//                        .disable())
+                .csrf(csrfConfig -> csrfConfig
+                        .disable())
                 .sessionManagement(sessionConfig-> sessionConfig
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .formLogin(Customizer.withDefaults());
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//               .formLogin(Customizer.withDefaults());
         return httpSecurity.build();
     }
 
