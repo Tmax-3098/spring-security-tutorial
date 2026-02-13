@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByEmail(username)
-                .orElseThrow(()-> new ResourceNotFoundException("user does not exists with email "+username));
+                .orElseThrow(()-> new BadCredentialsException("user does not exists with email "+username));
     }
 
     public UserEntity getUserByUserId(Long userId){
