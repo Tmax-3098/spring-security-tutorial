@@ -10,21 +10,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LoginService {
+public class AuthService {
 
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
 
     public String login(LoginDto loginDto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDto.getEmail(),loginDto.getPassword())
-        );
+        Authentication authentication = getAuthenticationObject(loginDto.getEmail(), loginDto.getPassword());
 
         UserEntity user = (UserEntity) authentication.getPrincipal();
         String token = jwtService.generateToken(user);
 
         return token;
 
+    }
+
+    public Authentication getAuthenticationObject(String email, String password){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(email, password)
+        );
+        return authentication;
     }
 }

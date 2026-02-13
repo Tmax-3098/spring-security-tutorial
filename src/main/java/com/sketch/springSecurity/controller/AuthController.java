@@ -3,7 +3,7 @@ package com.sketch.springSecurity.controller;
 import com.sketch.springSecurity.dto.LoginDto;
 import com.sketch.springSecurity.dto.SignupDto;
 import com.sketch.springSecurity.dto.UserDto;
-import com.sketch.springSecurity.services.LoginService;
+import com.sketch.springSecurity.services.AuthService;
 import com.sketch.springSecurity.services.UserServiceImpl;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserServiceImpl userService;
-    private final LoginService loginService;
+    private final AuthService authService;
 
     @PostMapping("/signup")
     public ResponseEntity<UserDto> signUp(@RequestBody SignupDto signupDto){
@@ -33,7 +33,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody LoginDto loginDto, HttpServletRequest request, HttpServletResponse response){
-        String token = loginService.login(loginDto);
+        String token = authService.login(loginDto);
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         response.addCookie(cookie);
