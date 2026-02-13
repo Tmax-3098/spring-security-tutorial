@@ -1,6 +1,8 @@
 package com.sketch.springSecurity.advices;
 
 import com.sketch.springSecurity.exception.ResourceNotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -24,4 +26,11 @@ public class GlobalExceptionHandler {
         ApiError error = ApiError.builder().error(e.getLocalizedMessage()).status(HttpStatus.UNAUTHORIZED).timestamp(LocalDateTime.now()).build();
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ApiError> handleJwtException(JwtException e){
+        ApiError error = ApiError.builder().error(e.getLocalizedMessage()).status(HttpStatus.UNAUTHORIZED).timestamp(LocalDateTime.now()).build();
+        return new ResponseEntity<>(error,HttpStatus.UNAUTHORIZED);
+    }
+
 }
